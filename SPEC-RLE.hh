@@ -154,6 +154,8 @@ size_t decompressParticle(const uint16_t *input, unsigned char *output)
   }
 
   input += 5;
+  // @TODO - this is a bug for Type32 / HVPS, should be minus 2.
+  // Currently this class doesn't know the difference.
   if (timingWord) nWords -= 3;
 
   if (nSlices > nWords)
