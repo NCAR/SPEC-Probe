@@ -163,7 +163,7 @@ size_t decompressParticle(const uint16_t *input, unsigned char *output)
   }
 
   // Preset output to all one's.
-  memset(output, 0x00, nSlices*16);
+  memset(output, 0xFF, nSlices*16);
 
   for (i = 0; i < nWords; ++i)
   {
@@ -173,7 +173,7 @@ size_t decompressParticle(const uint16_t *input, unsigned char *output)
       if (_debug)
         std::cout << "             ------------ Fully Shadowed Slice ------------\n";
       if (sliceStarted == true) ++sliceCnt;
-      memset(&output[sliceCnt*16], 0xff, 16);
+      memset(&output[sliceCnt*16], 0x00, 16);
       sliceStarted = false;
       bitPos = 0;
       ++sliceCnt;
@@ -198,7 +198,7 @@ size_t decompressParticle(const uint16_t *input, unsigned char *output)
     {
       if (sliceStarted == true) ++sliceCnt;
       sliceStarted = true;
-      memset(&output[sliceCnt*16], 0, 16);	// zero out next slice.
+      memset(&output[sliceCnt*16], 0xFF, 16);	// zero out next slice.
       bitPos = 0;
     }
 
@@ -212,7 +212,7 @@ size_t decompressParticle(const uint16_t *input, unsigned char *output)
       int offset = sliceCnt*16;
       for (int j = 0; j < value;  ++j, ++bitPos)
       {
-        output[(offset)+bitPos/8] |= (0x80 >> bitPos%8);
+        output[(offset)+bitPos/8] &= ~(0x80 >> bitPos%8);
       }
 
 //      bitPos += value;	// Claude says redundant
