@@ -232,9 +232,10 @@ size_t decompressParticle(const uint16_t *input, unsigned char *output)
   if (timingWord)
   {
     unsigned long tWord = ((unsigned long *)&input[nWords])[0] & 0x0000FFFFFFFFFFFF;
+    int nBytes = _timingWordSize * 2;
 
-    memcpy(&output[sliceCnt*16], &input[nWords], 6);
-    memset(&output[sliceCnt*16+6], 0x00, 2);
+    memcpy(&output[sliceCnt*16], &input[nWords], nBytes);
+    memset(&output[sliceCnt*16+nBytes], 0x00, 4);
     memset(&output[sliceCnt*16+8], 0xaa, 8);
     ++sliceCnt;
 
